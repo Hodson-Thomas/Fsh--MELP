@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "HUqzAujuYkOevLKhsE7jETDBKc/NBIOJDae3BtwnCDuwuxA0vuKzsO2LgcdHeBkvFxyDf3JLAV6tr0Yu1q0vgA==",
+  "success": true,
+  "projectFilePath": "c:\\Users\\tsumi\\Documents\\Github\\Fsh--MELP\\melp\\melp.fsproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\tsumi\\.nuget\\packages\\fsharp.core\\7.0.400\\fsharp.core.7.0.400.nupkg.sha512"
+  ],
+  "logs": []
+}
