@@ -1,12 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
+    <Compile Include="utils\errors.fs" />
+    <Compile Include="utils\utils.fs" />
+    <Compile Include="lexer\tokens.fs" />
+    <Compile Include="lexer\ast.fs" />
+    <Compile Include="lexer\parser.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-
 </Project>
