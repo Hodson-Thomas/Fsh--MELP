@@ -61,10 +61,10 @@ module Tokens =
     open Utils.Errors;
     open System.Text.RegularExpressions
 
-    let int_regex = "[0-9][0-9]*"
-    let float_regex = "[0-9][0-9]*[.,][0-9]*"
+    let int_regex = "^[0-9]*$"
+    let float_regex = "^[0-9]+([.,][0-9]+)?$"
 
-    let id_regex = "[a-z A-Z][a-z A-Z]*"
+    let id_regex = "^[a-z]+$"
 
     let string_to_atomic_token (str: string) : Option<Token> = 
       match str with
@@ -81,8 +81,10 @@ module Tokens =
       | "+" | "-" | "*" | "/" | "(" | ")" -> None
       | "sin" | "cos" | "tan" -> None
       | _ -> 
-        if Regex.Match(str, float_regex).Success then Some(Float( str |> float ))
-        else if Regex.Match(str, int_regex).Success then Some(Int(str |> int))
+        if Regex.Match(str, int_regex).Success then Some(Int(str |> int))
+        else if Regex.Match(str, float_regex).Success then Some (
+          Float((Utils.Utilities.replace_char_in_string str ',' '.') |> float )
+        )
         else if Regex.Match(str, id_regex).Success then Some(Id(str))
         else None
 
@@ -99,12 +101,15 @@ module Tokens =
       | [], _ -> 
         let b = buff |> List.rev |> Utils.Utilities.char_list_to_string in
         match string_to_token b with
-        | Some tk -> Ok ((tk :: output) |> List.rev)
+        | Some tk -> tk :: output |> List.rev |> Ok
         | _ -> Error (UnknownSequence b)
       | h :: t, [] -> 
         if Validators.is_escape_char h 
           then chars_to_tokens t buff output
-          else chars_to_tokens t [h] output
+          else
+            match string_to_atomic_token (h |> string) with
+            | None -> chars_to_tokens t [h] output
+            | Some tk -> chars_to_tokens t [] (tk :: output)
       | h :: t, _ -> 
         let b = buff |> List.rev |> Utils.Utilities.char_list_to_string in 
         if Validators.is_escape_char h then
@@ -112,13 +117,14 @@ module Tokens =
           | Some tk -> chars_to_tokens t [] (tk :: output) 
           | None -> Error (UnknownSequence b)
         else 
-          match string_to_atomic_token (h |> string ) with
+          match string_to_atomic_token (h |> string) with
           | Some tk -> 
-            let b = buff |> List.rev |> Utils.Utilities.char_list_to_string in
             match string_to_token b with
-            | Some tk' -> chars_to_tokens t [] (tk' :: tk :: output)
-            | None -> Error (UnknownSequence b)
-          | None -> chars_to_tokens t (h :: buff) output
+            | Some tk' -> chars_to_tokens t [] (tk :: tk':: output)
+            | None -> 
+              Error (UnknownSequence b)
+          | None -> 
+            chars_to_tokens t (h :: buff) output
 
   let string_to_tokens (str: string) : Result<List<Token>, Utils.Errors.Error> = 
     Logic.chars_to_tokens (Seq.toList str) [] []

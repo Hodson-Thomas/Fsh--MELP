@@ -87,8 +87,74 @@ module Parser =
             | _ -> ParsingError "Invalid operator found" |> Error
         | _ -> ParsingError "Too many operand found" |> Error
 
+    let rec get_value (var: string) (vals: list<string * double>) : Option<double> = 
+      match vals with
+      | [] -> None
+      | (n, v) :: t -> 
+        if n = var then Some v 
+        else get_value var t 
+
+    let rec eval_tree (tree: Tree) (vals: list<string * double>) : Result<double, Error> = 
+      match tree with
+      | Add (left, right) -> 
+        let left' = eval_tree left vals in 
+        let right' = eval_tree right vals in 
+        match left', right' with
+        | Error e, _ | _, Error e -> Error e
+        | Ok left'', Ok right'' -> left'' + right'' |> Ok
+      | Sub (left, right) -> 
+        let left' = eval_tree left vals in 
+        let right' = eval_tree right vals in 
+        match left', right' with
+        | Error e, _ | _, Error e -> Error e
+        | Ok left'', Ok right'' -> left'' - right'' |> Ok
+      | Mul (left, right) -> 
+        let left' = eval_tree left vals in 
+        let right' = eval_tree right vals in 
+        match left', right' with
+        | Error e, _ | _, Error e -> Error e
+        | Ok left'', Ok right'' -> left'' * right'' |> Ok
+      | Div (left, right) -> 
+        let left' = eval_tree left vals in 
+        let right' = eval_tree right vals in 
+        match left', right' with
+        | Error e, _ | _, Error e -> Error e
+        | Ok left'', Ok right'' -> 
+          if right'' = 0 then NonContinueError "Division by 0" |> Error
+          else left'' + right'' |> Ok
+      | Neg op ->
+        let op' = eval_tree op vals in 
+        match op' with
+        | Error e -> Error e
+        | Ok op'' -> - op'' |> Ok
+      | Float f -> f |> Ok
+      | Int i -> i |> double |> Ok
+      | Id i -> 
+        match get_value i vals with
+        | Some v -> Ok v
+        | None -> EvalError (sprintf "No value for var <%s> was given" i) |> Error
+
+    let rec get_list_id (tree: Tree) : Result<list<string>, Error> = 
+      match tree with
+      | Add (left, right) | Mul (left, right) | Sub (left, right) | Div (left, right) ->
+        let left' = get_list_id left in
+        let right' = get_list_id right in
+        match left', right' with
+        | Error e, _ | _, Error e -> Error e
+        | Ok left'', Ok right'' -> Utils.Utilities.intersect_list left'' right'' |> Ok
+      | Neg op -> get_list_id op 
+      | Id i -> Ok [i]
+      |_ -> Ok []
+
+
+  let get_list_id (tree: Tree) : Result<list<string>, Utils.Errors.Error> = 
+    Logic.get_list_id tree
+
   let parse_ast (ast: Ast.Expr) : Result<Tree, Utils.Errors.Error> = 
     Logic.parse_ast ast
 
   let tree_to_string (tree: Tree) : string = 
     Debug.tree_to_string tree
+  
+  let eval_tree (tree: Tree) (vals: list<string * double>) : Result<double, Utils.Errors.Error> = 
+    Logic.eval_tree tree vals

@@ -15,5 +15,6 @@
   </ItemGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\tsumi\.nuget\packages\fsharp.core\7.0.400</PkgFSharp_Core>
+    <PkgPlotly_NET Condition=" '$(PkgPlotly_NET)' == '' ">C:\Users\tsumi\.nuget\packages\plotly.net\4.2.0</PkgPlotly_NET>
   </PropertyGroup>
 </Project>

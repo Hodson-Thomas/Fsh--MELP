@@ -4,11 +4,16 @@
     <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="utils\printer.fs" />
     <Compile Include="utils\errors.fs" />
     <Compile Include="utils\utils.fs" />
     <Compile Include="lexer\tokens.fs" />
     <Compile Include="lexer\ast.fs" />
     <Compile Include="lexer\parser.fs" />
+    <Compile Include="gui\plotting.fs" />
     <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Plotly.NET" Version="4.2.0" />
   </ItemGroup>
 </Project>

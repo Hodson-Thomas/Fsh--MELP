@@ -1,10 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "HUqzAujuYkOevLKhsE7jETDBKc/NBIOJDae3BtwnCDuwuxA0vuKzsO2LgcdHeBkvFxyDf3JLAV6tr0Yu1q0vgA==",
+  "dgSpecHash": "dlWg2X379efqQZMgn+KQQy3i10EXvlwnSyHoh9ZOJFSnT7BvDKn8i5KWeit7yIZeKouIuttu1pSafseyMYYz/g==",
   "success": true,
-  "projectFilePath": "c:\\Users\\tsumi\\Documents\\Github\\Fsh--MELP\\melp\\melp.fsproj",
+  "projectFilePath": "C:\\Users\\tsumi\\Documents\\Github\\Fsh--MELP\\melp\\melp.fsproj",
   "expectedPackageFiles": [
-    "C:\\Users\\tsumi\\.nuget\\packages\\fsharp.core\\7.0.400\\fsharp.core.7.0.400.nupkg.sha512"
+    "C:\\Users\\tsumi\\.nuget\\packages\\dynamicobj\\2.0.0\\dynamicobj.2.0.0.nupkg.sha512",
+    "C:\\Users\\tsumi\\.nuget\\packages\\fsharp.core\\7.0.400\\fsharp.core.7.0.400.nupkg.sha512",
+    "C:\\Users\\tsumi\\.nuget\\packages\\giraffe.viewengine.strongname\\2.0.0-alpha1\\giraffe.viewengine.strongname.2.0.0-alpha1.nupkg.sha512",
+    "C:\\Users\\tsumi\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\tsumi\\.nuget\\packages\\plotly.net\\4.2.0\\plotly.net.4.2.0.nupkg.sha512"
   ],
   "logs": []
 }

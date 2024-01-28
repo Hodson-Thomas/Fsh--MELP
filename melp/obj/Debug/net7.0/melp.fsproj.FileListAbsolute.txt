@@ -27,3 +27,7 @@ c:\Users\tsumi\Documents\Github\Fsh--MELP\melp\obj\Debug\net7.0\refint\melp.dll
 c:\Users\tsumi\Documents\Github\Fsh--MELP\melp\obj\Debug\net7.0\melp.pdb
 c:\Users\tsumi\Documents\Github\Fsh--MELP\melp\obj\Debug\net7.0\melp.genruntimeconfig.cache
 c:\Users\tsumi\Documents\Github\Fsh--MELP\melp\obj\Debug\net7.0\ref\melp.dll
+c:\Users\tsumi\Documents\Github\Fsh--MELP\melp\bin\Debug\net7.0\DynamicObj.dll
+c:\Users\tsumi\Documents\Github\Fsh--MELP\melp\bin\Debug\net7.0\Giraffe.ViewEngine.StrongName.dll
+c:\Users\tsumi\Documents\Github\Fsh--MELP\melp\bin\Debug\net7.0\Newtonsoft.Json.dll
+c:\Users\tsumi\Documents\Github\Fsh--MELP\melp\bin\Debug\net7.0\Plotly.NET.dll

@@ -186,7 +186,6 @@ module Ast =
     |> Logic.extract_divide
     |> Logic.extract_add
     |> Logic.extract_minus
-
     
 
   let expr_to_string (expression: Expr) : string = 

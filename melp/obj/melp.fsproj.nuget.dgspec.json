@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\tsumi\\Documents\\Github\\Fsh--MELP\\melp\\melp.fsproj": {}
+    "C:\\Users\\tsumi\\Documents\\Github\\Fsh--MELP\\melp\\melp.fsproj": {}
   },
   "projects": {
-    "c:\\Users\\tsumi\\Documents\\Github\\Fsh--MELP\\melp\\melp.fsproj": {
+    "C:\\Users\\tsumi\\Documents\\Github\\Fsh--MELP\\melp\\melp.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\tsumi\\Documents\\Github\\Fsh--MELP\\melp\\melp.fsproj",
+        "projectUniqueName": "C:\\Users\\tsumi\\Documents\\Github\\Fsh--MELP\\melp\\melp.fsproj",
         "projectName": "melp",
-        "projectPath": "c:\\Users\\tsumi\\Documents\\Github\\Fsh--MELP\\melp\\melp.fsproj",
+        "projectPath": "C:\\Users\\tsumi\\Documents\\Github\\Fsh--MELP\\melp\\melp.fsproj",
         "packagesPath": "C:\\Users\\tsumi\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\tsumi\\Documents\\Github\\Fsh--MELP\\melp\\obj\\",
+        "outputPath": "C:\\Users\\tsumi\\Documents\\Github\\Fsh--MELP\\melp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -45,6 +45,11 @@
               "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
               "target": "Package",
               "version": "[7.0.400, )",
+              "generatePathProperty": true
+            },
+            "Plotly.NET": {
+              "target": "Package",
+              "version": "[4.2.0, )",
               "generatePathProperty": true
             }
           },
