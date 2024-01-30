@@ -1,7 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <Version>1.0</Version>
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <RepositoryUrl>https://github.com/Hodson-Thomas/Fsh--MELP</RepositoryUrl>
+    <RepositoryBranch>main</RepositoryBranch>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="utils\printer.fs" />

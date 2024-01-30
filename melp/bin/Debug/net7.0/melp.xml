@@ -1,0 +1,1563 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>melp</name></assembly>
+<members>
+<member name="T:Utilities.Printer.Status">
+ <summary>
+ Describes the differents messages status.
+ </summary>
+</member>
+<member name="T:Utilities.Printer.Color">
+ <summary>
+ Describes the console's available foreground colors.
+ </summary>
+</member>
+<member name="M:Utilities.Printer.print(Utilities.Printer.Status,System.String)">
+ <summary>
+ Prints the given message with its status' configuration. 
+ </summary>
+ 
+ <remarks>If the DEBUG flag isn't active, only Info & Normal status messages are printed out.</remarks>
+ 
+ <param name="status">The message status.</param>
+ <param name="msg">The message.</param>
+ 
+ <example>
+   <code>
+     let status = ... in
+     let msg = "..." in
+     print status msg
+   </code>
+ </example>
+</member>
+<member name="P:Utilities.Printer.DEBUG">
+ <summary>
+ Indicates if Errors and Success messages are displayed.
+ </summary>
+</member>
+<member name="M:Utilities.Printer.Logic.print_with_status(Utilities.Printer.Status,System.String)">
+ <summary>
+ Prints the given message with the status' header and the status' color.
+ </summary>
+ 
+ <param name="status">The message status.</param>
+ <param name="str">The message.</param>
+ 
+ <example>
+   <code>
+     let status = ... in
+     let str = "..." in 
+     print_with_status status str
+   </code>
+ </example>
+</member>
+<member name="M:Utilities.Printer.Logic.color_of_status(Utilities.Printer.Status)">
+ <summary>
+ Converts a status to a color.
+ </summary>
+ 
+ <param name="status">The status.</param>
+ 
+ <returns>A color.</returns>
+ 
+ <example>
+   <code>
+     let status = ... in
+     let color = color_of_status status
+   </code>
+ </example>
+</member>
+<member name="M:Utilities.Printer.Logic.get_color_code_wrapper(Utilities.Printer.Color)">
+ <summary>
+ Converts the given color to a System.ConsoleColor object.
+ </summary>
+ 
+ <remarks>
+ This function returns the console's default color to reset the message after it has been printed-out.
+ </remarks>
+ 
+ <param name="color">The message's color.</param>
+ 
+ <returns>A tuple of System.ConsoleColor.</returns>
+ 
+ <example>
+   <code>
+     let color = ... in 
+     let new_fg, reset_fg = get_color_code_wrapper color
+   </code>
+ </example>
+</member>
+<member name="M:Utilities.Printer.Logic.base_of_status(Utilities.Printer.Status)">
+ <summary>
+ Returns the header of a message depending on the given status.
+ </summary>
+ 
+ <param name="status">The message's status.</param>
+ 
+ <returns>A string.</returns>
+ 
+ <example>
+   <code>
+     let status = ... in
+     let str = base_of_status status in 
+     printfn "Status : %s" str
+   </code>
+ </example>
+</member>
+<member name="T:Utilities.Printer.Logic">
+ <summary>
+ This module contains all the logic.
+ </summary>  
+</member>
+<member name="T:Utilities.Printer">
+ <summary>
+ This module contains all the code to print out messages on the console.
+ </summary>
+ 
+ <remarks>
+ All the logic is nested in a private sub-module.
+ </remarks>
+</member>
+<member name="T:Utils.Errors.Error">
+ <summary>
+ Describes all lexer's and plotter's errors. 
+ </summary>
+</member>
+<member name="M:Utils.Errors.error_to_string(Utils.Errors.Error)">
+ <summary>
+ Converts an error to a string.
+ </summary>
+ 
+ <param name="error">The error.</param>
+ 
+ <returns>A string.</returns>
+ 
+ <example>
+   <code>
+     let error = ... in
+     let str = error_to_string error in 
+     printfn "Error : %s" e
+   </code>
+ </example>
+</member>
+<member name="T:Utils.Errors">
+ <summary>
+ This module contains all the code to handle errors.
+ </summary>
+</member>
+<member name="M:Utils.Utilities.replace_char_in_string(System.String,System.Char,System.Char)">
+ <summary>
+ Replaces all appearance of the targetted char with the new given char.
+ </summary>
+ 
+ <param name="str">The string.</param>
+ <param name="old'">The targetted char.</param>
+ <param name="new'">The new char.</param>
+ 
+ <returns>A string.</returns>
+ 
+ <example>
+   <code>
+     let str = "..." in
+     let old' = '...' in
+     let new' = '...' in
+     let str' = replace_char_in_string str old' new' in
+     printfn "String '%s' has been transformed to %s" str str'
+   </code>
+ </example>
+</member>
+<member name="M:Utils.Utilities.intersect_list``1(Microsoft.FSharp.Collections.FSharpList{``0},Microsoft.FSharp.Collections.FSharpList{``0})">
+ <summary>
+ Returns the intersection of two lists, i.e. all the common elements of both lists.
+ </summary>
+ 
+ <remarks>
+ The final list will not contain any duplicates.
+ </remarks>
+ 
+ <param name="list1">The first list.</param>
+ <param name="list1">The second list.</param>
+ 
+ <returns>A list.</returns>
+ 
+ <example>
+   <code>
+     let list1 = [ ... ] in 
+     let list2 = [ ... ] in
+     intersect_list list1 list2
+   </code>
+ </example>
+</member>
+<member name="M:Utils.Utilities.char_list_to_string(Microsoft.FSharp.Collections.FSharpList{System.Char})">
+ <summary>
+ Converts a list of char to a string.
+ </summary>
+ 
+ <param name="chars">The list of char.</param>
+ 
+ <returns>A string.</returns>
+ 
+ <example>
+   <code>
+     let chars = [ ... ] in 
+     let str = char_list_to_string str in
+     printfn "Char list converted to : %s" str
+   </code>
+ </example>
+</member>
+<member name="M:Utils.Utilities.unwrap``1(Microsoft.FSharp.Core.FSharpResult{``0,Utils.Errors.Error})">
+ <summary>
+ Returns the Ok variant from a Result.
+ </summary>
+ 
+ <remarks>
+ If an Error variant is found, the program crashes.
+ </remarks>
+ 
+ <param name="elem">The result.</param>
+ 
+ <returns>The Ok value.</returns>
+ 
+ <example>
+   <code>
+     let elem = ... in
+     let elem' = unwrap elem 
+   </code>
+ </example>
+</member>
+<member name="M:Utils.Utilities.any_err``1(Microsoft.FSharp.Collections.FSharpList{Microsoft.FSharp.Core.FSharpResult{``0,Utils.Errors.Error}})">
+ <summary>
+ Checks if the given list contains at least one Error variant.
+ </summary>
+ 
+ <param name="list">The list.</param>
+ 
+ <return>A boolean</param>
+ 
+ <example>
+   <code>
+     let list = [ ... ] in 
+     if any_err list 
+       then printfn "The list contains an error."
+       else printfn "The list does not contain an error."
+   </code>
+ </example>
+</member>
+<member name="T:Utils.Utilities">
+ <summary>
+ This module contains all general purposes elements.
+ </summary>
+</member>
+<member name="T:Lexer.Tokens.Token">
+ <summary>
+ The different tokens.
+ </summary>
+</member>
+<member name="M:Lexer.Tokens.tokens_to_string(Microsoft.FSharp.Collections.FSharpList{Lexer.Tokens.Token})">
+ <summary>
+ Converts a list of tokens to a string.
+ </summary>
+ 
+ <param name="tokens">The list of tokens.</param>
+ 
+ <result>A string.</result>
+ 
+ <example>
+   <code>
+     let tokens = [ ... ] in
+     let str = tokens_to_string tokens in 
+     printfn "Tokens : %s" str
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Tokens.token_to_string(Lexer.Tokens.Token)">
+ <summary>
+ Converts a token to a string.
+ </summary>
+ 
+ <param name="token">The token.</param>
+ 
+ <result>A string.</result>
+ 
+ <example>
+   <code>
+     let token = ... in
+     let str = token_to_string token in 
+     printfn "Token : %s" str
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Tokens.string_to_tokens(System.String)">
+ <summary>
+ Attempts to convert a string to a list of tokens.
+ </summary>
+ 
+ <remarks>
+ This function ensures that no unknown sequence of char is in the expression.
+ </remarks>
+ 
+ <param name="str">The string.</param>
+ 
+ <returns>
+ If the function detects an unknown sequence of char, it returns an error else it returns a list of tokens.
+ </returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+ 
+     let str = "..." in
+     match chars_to_tokens str with
+     | Error e -> printfn "Something went wrong : %s." (error_to_string e)
+     | Ok _ -> printfn "Successfull parsing."
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Tokens.Logic.chars_to_tokens(Microsoft.FSharp.Collections.FSharpList{System.Char},Microsoft.FSharp.Collections.FSharpList{System.Char},Microsoft.FSharp.Collections.FSharpList{Lexer.Tokens.Token})">
+ <summary>
+ Attempts to convert a list of chars to a list of tokens.
+ </summary>
+ 
+ <remarks>
+ This function ensures that no unknown sequence of char is in the expression.
+ </remarks>
+ 
+ <param name="chars">The list of char.</param>
+ <param name="buff">A temporary buffer.</param>
+ <param name="output">The tokens processed.</param>
+ 
+ <returns>
+ If the function detects an unknown sequence of char, it returns an error else it returns a list of tokens.
+ </returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+ 
+     let chars = [ ... ] in
+     match chars_to_tokens chars [] [] with
+     | Error e -> printfn "Something went wrong : %s." (error_to_string e)
+     | Ok _ -> printfn "Successfull parsing."
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Tokens.Logic.string_to_token(System.String)">
+ <summary>
+ Attempts to convert a string to a token.
+ </summary>
+ 
+ <param name="str">The string.</param>
+ 
+ <returns>
+ If the string is successfully converted it returns the token else it returns None.
+ </returns>
+ 
+ <example>
+   <code>
+     let str = "..." in 
+     match string_to_token str with
+     | None -> printfn "The string is not a token"
+     | Some _ -> printfn "The string is a token"
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Tokens.Logic.string_to_value(System.String)">
+ <summary>
+ Attempts to convert a string to a value token.
+ </summary>
+ 
+ <param name="str">The string.</param>
+ 
+ <returns>
+ If the string is successfully converted it returns the token else it returns None.
+ </returns>
+ 
+ <example>
+   <code>
+     let str = "..." in
+     match string_to_value str with
+     | None -> printfn "The string is not a value."
+     | Some _ -> printfn "The string is a value."
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Tokens.Logic.string_to_atomic_token(System.String)">
+ <summary>
+ Attempts to convert a string to an atomic token.
+ </summary>
+ 
+ <param name="str">The string.</param>
+ 
+ <returns>
+ If the string is successfully converted it returns the token else it returns None.
+ </returns>
+ 
+ <example>
+   <code>
+     let str = "..." in
+     match string_to_atomic_token str with
+     | None -> printfn "The string is not an atomic token."
+     | Some _ -> printfn "The string is an atomic token."
+   </code>
+ </example>
+</member>
+<member name="P:Lexer.Tokens.Logic.id_regex">
+ <summary>
+ The identifier regex.
+ </summary>
+</member>
+<member name="P:Lexer.Tokens.Logic.float_regex">
+ <summary>
+ The float regex.
+ </summary>
+</member>
+<member name="P:Lexer.Tokens.Logic.int_regex">
+ <summary>
+ The integer regex.
+ </summary>
+</member>
+<member name="T:Lexer.Tokens.Logic">
+ <summary>
+ This module contains all the logic.
+ </summary>  
+</member>
+<member name="M:Lexer.Tokens.Validators.is_escape_char(System.Char)">
+ <summary>
+ Checks if the char is an escape char.
+ </summary>
+ 
+ <param name="c">A char.</param>
+ 
+ <returns>A boolean.</returns>
+ 
+ <example>
+   <code>
+     let c = ... in 
+      if is_escape_char c 
+       then printfn "'%c' is an escape char" c
+       else printfn "'%c' is not an escape char"
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Tokens.Validators.is_value(Lexer.Tokens.Token)">
+ <summary>
+ Checks if the token is a value.
+ </summary>
+ 
+ <param name="token">A token.</param>
+ 
+ <returns>A boolean.</returns>
+ 
+ <example>
+   <code>
+     let token = ... in
+     if is_value token 
+       then printfn "The token is a value."
+       else printfn "The token is not a value."
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Tokens.Validators.is_operator(Lexer.Tokens.Token)">
+ <summary>
+ Checks if the token is an operator.
+ </summary>
+ 
+ <param name="token">A token.</param>
+ 
+ <returns>A boolean.</returns>
+ 
+ <example>
+   <code>
+     let token = ... in
+     if is_operator token 
+       then printfn "The token is an operator."
+       else printfn "The token is not an operator."
+   </code>
+ </example>
+</member>
+<member name="T:Lexer.Tokens.Validators">
+ <summary>
+ This module contains element for comparing tokens and process some custom conditions.
+ </summary>
+</member>
+<member name="M:Lexer.Tokens.Debug.tokens_to_string(Microsoft.FSharp.Collections.FSharpList{Lexer.Tokens.Token})">
+ <summary>
+ Converts a list of tokens to a string.
+ </summary>
+ 
+ <param name="tokens">The list of tokens.</param>
+ 
+ <returns>A string.</returns>
+ 
+ <example>
+   <code>
+     let tokens = [ ... ] in
+     let str = tokens in 
+     printfn "Tokens : %s" tokens
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Tokens.Debug.token_to_string(Lexer.Tokens.Token)">
+ <summary>
+ Converts a token to a string.
+ </summary>
+ 
+ <param name="token">A token</param>
+ 
+ <returns>A string.</returns>
+ 
+ <example>
+   <code>
+     let token = ... in
+     let str = token_to_string str in
+     printfn "Token : %s" token
+   </code>
+ </example>
+</member>
+<member name="T:Lexer.Tokens.Debug">
+ <summary>
+ This module contains element for debugging purposes.
+ </summary>
+</member>
+<member name="T:Lexer.Tokens">
+ <summary>
+ This module contains all the code to process a string to a list of Token.
+ </summary>
+ 
+ <remarks>
+ All the logic is nested in a private sub-module.
+ </remarks>
+</member>
+<member name="T:Lexer.Ast.Expr">
+ <summary>
+ The AST type.
+ </summary>
+</member>
+<member name="M:Lexer.Ast.expr_to_string(Lexer.Ast.Expr)">
+ <summary>
+ Converts an expression to a string.
+ </summary>
+ 
+ <param name="expression">The expression.</param>
+ 
+ <returns>A string.</returns>
+ 
+ <example>
+   <code>
+     let expression = ... in
+     let str = expr_to_string expression in
+     printfn "Expression : %s" str
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Ast.tokens_to_ast(Microsoft.FSharp.Collections.FSharpList{Lexer.Tokens.Token})">
+ <summary>
+ Attempts to convert a list of tokens to an AST.
+ </summary>
+ 
+ <remarks>
+ This functions ensure that the expression doesn't contains any structural error.
+ </remarks>
+ 
+ <param name="tokens">The list of tokens.</param>
+ 
+ <returns>
+ An error if any step returns an error else it returns an expression.
+ </returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+ 
+     let tokens = [ ... ] in 
+     match tokens_to_ast tokens with
+     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+     | Ok _ -> printfn "Tokens parsed to AST"
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Ast.Logic.extract_minus(Microsoft.FSharp.Core.FSharpResult{Lexer.Ast.Expr,Utils.Errors.Error})">
+ <summary>
+ Nest in a block all substract pattern.
+ </summary>
+ 
+ <remarks>
+ This function ensures that all substract pattern are valid.
+ </remarks>
+ 
+ <remarks>
+ If the given expression is an error variant, it immediately returns the error.
+ </remarks>
+ 
+ <param name="expr">The expression to process.</param>
+ 
+ <returns>
+ If a substract pattern is invalid it returns an Error else it returns an Expr.
+ </returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+ 
+     let expression = ... |> Ok in 
+     match extract_minus expression with
+     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+     | Ok _ -> printfn "Minus patterns extracted !"
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Ast.Logic.extract_add(Microsoft.FSharp.Core.FSharpResult{Lexer.Ast.Expr,Utils.Errors.Error})">
+ <summary>
+ Nest in a block all add pattern.
+ </summary>
+ 
+ <remarks>
+ This function ensures that all add pattern are valid.
+ </remarks>
+ 
+ <remarks>
+ If the given expression is an error variant, it immediately returns the error.
+ </remarks>
+ 
+ <param name="expr">The expression to process.</param>
+ 
+ <returns>
+ If a add pattern is invalid it returns an Error else it returns an Expr.
+ </returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+ 
+     let expression = ... |> Ok in 
+     match extract_add expression with
+     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+     | Ok _ -> printfn "Add patterns extracted !"
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Ast.Logic.extract_divide(Microsoft.FSharp.Core.FSharpResult{Lexer.Ast.Expr,Utils.Errors.Error})">
+ <summary>
+ Nest in a block all divide pattern.
+ </summary>
+ 
+ <remarks>
+ This function ensures that all divide pattern are valid.
+ </remarks>
+ 
+ <remarks>
+ If the given expression is an error variant, it immediately returns the error.
+ </remarks>
+ 
+ <param name="expr">The expression to process.</param>
+ 
+ <returns>
+ If a divide pattern is invalid it returns an Error else it returns an Expr.
+ </returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+ 
+     let expression = ... |> Ok in 
+     match extract_divide expression with
+     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+     | Ok _ -> printfn "Divide patterns extracted !"
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Ast.Logic.extract_times(Microsoft.FSharp.Core.FSharpResult{Lexer.Ast.Expr,Utils.Errors.Error})">
+ <summary>
+ Nest in a block all times pattern.
+ </summary>
+ 
+ <remarks>
+ This function ensures that all times pattern are valid.
+ </remarks>
+ 
+ <remarks>
+ If the given expression is an error variant, it immediately returns the error.
+ </remarks>
+ 
+ <param name="expr">The expression to process.</param>
+ 
+ <returns>
+ If a times pattern is invalid it returns an Error else it returns an Expr.
+ </returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+ 
+     let expression = ... |> Ok in 
+     match extract_times expression with
+     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+     | Ok _ -> printfn "Times patterns extracted !"
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Ast.Logic.extract_double_operand_operation(Microsoft.FSharp.Core.FSharpResult{Lexer.Ast.Expr,Utils.Errors.Error},Lexer.Tokens.Token)">
+ <summary>
+ Nest every double operand pattern matching the given operator inside a block in the given expression. 
+ </summary>
+ 
+ <remarks>
+ This function ensures that all double operand pattern matching the given operator are valid.
+ </remarks>
+ 
+ <remarks>
+ If the given expression is an error variant, it immediately returns the error.
+ </remarks>
+ 
+ <param name="expr">The expression to process.</param>
+ <param name="operator">The operator.</param>
+ 
+ <returns>
+ If a double operand pattern is invalid it returns an Error else it returns an Expr.
+ </returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+     
+     let expression = ... |> Ok in
+     let operator = ... in 
+     match extract_double_operand_operation expression operator with
+     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+     | Ok _ -> printfn "Double operand patterns extracted !"
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Ast.Logic.extract_negate(Microsoft.FSharp.Core.FSharpResult{Lexer.Ast.Expr,Utils.Errors.Error})">
+ <summary>
+ Nest every negate pattern inside a block in the given expression. 
+ </summary>
+ 
+ <remarks>
+ This function ensures that all negates pattern are valid.
+ </remarks>
+ 
+ <remarks>
+ If the given expression is an error variant, it immediately returns the error.
+ </remarks>
+ 
+ <param name="expr">The expression to process.</param>
+ 
+ <returns>
+ If a negate pattern is invalid it returns an Error else it returns an Expr.
+ </returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+ 
+     let expr = ... |> Ok in 
+     match extract_negate expr with
+     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+     | Ok _ -> printfn "Negate patterns extracted !"
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Ast.Logic.extract_ok(Microsoft.FSharp.Collections.FSharpList{Microsoft.FSharp.Core.FSharpResult{Lexer.Ast.Expr,Utils.Errors.Error}})">
+ <summary>
+ Converts a list of result to a list of expr.
+ </summary>
+ 
+ <remarks>
+ If one of the result is an error variant, the program crashes. 
+ </remarks>
+ 
+ <param name="list">The list of result.</param>
+ 
+ <returns>
+ A list of Expr.
+ </returns>
+ 
+ <example>
+   <code>
+     let list = [ ... ] |> extract_ok
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Ast.Logic.extract_paranthesis(Microsoft.FSharp.Collections.FSharpList{Lexer.Tokens.Token})">
+ <summary>
+ Extracts into seperate blocks the tokens inside parenthesis.
+ </summary>
+ 
+ <remarks>
+ This function ensures that paranthesis matches.
+ </remarks>
+ 
+ <param name="tokens">The token list to process.</param>
+ 
+ <returns>
+ If a paranthesis doesn't match it returns an Error else it returns an Expr.
+ </returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+     
+     let tokens = [ ... ] in 
+     match extract_paranthesis tokens with
+     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+     | Ok _ -> printfn "Paranthesis extracted !" 
+   </code>
+ </example>
+</member>
+<member name="T:Lexer.Ast.Logic">
+ <summary>
+ This module contains all the logic.
+ </summary>  
+</member>
+<member name="M:Lexer.Ast.Validators.is_expr_token(Lexer.Ast.Expr,Lexer.Tokens.Token)">
+ <summary>
+ Checks if the given expression matches to the given token.
+ </summary>
+ 
+ <param name="expr">The expression.</param>
+ <param name="token">The token.</param>
+ 
+ <returns>A boolean</returns>
+ 
+ <example>
+   <code>
+     let expression = ... in
+     let token = ... in
+     if is_expr_token expression token
+       then printfn "The expression matches to the token."
+       else printfn "The expression does not match the token."
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Ast.Validators.is_single_operand_operation(Lexer.Ast.Expr,Lexer.Ast.Expr)">
+ <summary>
+ Checks if the given expressions matches to a single operand pattern.
+ </summary>
+ 
+ <remarks>
+ A single operand pattern is defined as follow: (Operator) (Value).
+ </remarks>
+ 
+ <param name="e1">The thirst expression. It will be processed as the operator.</param>
+ <param name="e2">The second expression. It will be processed as the oprand.</param>
+ 
+ <returns>A boolean</returns>
+ 
+ <example>
+   <code>
+     let expression1 = ... in
+     let expression2 = ... in
+     if is_single_operand_operation expression1 expression2 
+       then printfn "Single operand pattern found."
+       else printfn "Single operand pattern not found."
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Ast.Validators.is_double_operand_pattern_valid(Lexer.Ast.Expr,Lexer.Ast.Expr,Lexer.Ast.Expr)">
+ <summary>
+ Checks if the given expressions matches to a double operand pattern.
+ </summary>
+ 
+ <remarks>
+ A double operand pattern is defined as follow: (Value) (Operator) (Value).
+ </remarks>
+ 
+ <param name="e1">The first expression. It will be processed as the left oprand.</param>
+ <param name="e2">The second expression. It will be processed as the operator.</param>
+ <param name="e3">The third expression. It will be processed as the right oprand.</param>
+ 
+ <returns>A boolean</returns>
+ 
+ <example>
+   <code>
+     let expression1 = ... in
+     let expression2 = ... in
+     let expression3 = ... in
+     if is_double_operand_pattern_valid expression1 expression2 expression3 
+       then printfn "Double operand pattern found."
+       else printfn "Double operand pattern nor found."
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Ast.Validators.is_value(Lexer.Ast.Expr)">
+ <summary>
+ Checks if the given expression is a value.
+ </summary>
+ 
+ <param name="expr">The expression.</param>
+ 
+ <returns>A boolean</returns>
+ 
+ <example>
+   <code>
+     let expr = ... in
+     if is_value expr 
+       then printfn "The expression is a value."
+       else "The expression is not a value."
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Ast.Validators.is_operator(Lexer.Ast.Expr)">
+ <summary>
+ Checks if the given expression is an operator token.
+ </summary>
+ 
+ <param name="expr">The expression.</param>
+ 
+ <returns>A boolean</returns>
+ 
+ <example>
+   <code>
+     let expr = ... in
+     if is_operator expr 
+       then printfn "The expression is an operator."
+       else "The expression is not an operator."
+   </code>
+ </example>
+</member>
+<member name="T:Lexer.Ast.Validators">
+ <summary>
+ This module contains element for comparing expressions and process some custom conditions.
+ </summary>
+</member>
+<member name="M:Lexer.Ast.Debug.expr_to_string_flat(Lexer.Ast.Expr)">
+ <summary>
+ Converts an AST to a string.
+ </summary>
+ 
+ <remarks>
+ The functions returns a flat string representation of the expression.
+ </remarks>
+ 
+ <param name="expression">The expression to be converted.</param>
+ 
+ <returns>A string.</returns>
+ 
+ <example>
+   <code>
+     let expr = ... in
+     let str = expr_to_string_flat expr in 
+     printfn "Expression : %s" str
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Ast.Debug.expr_to_string(Lexer.Ast.Expr,System.Int32)">
+ <summary>
+ Converts an AST to a string.
+ </summary>
+ 
+ <remarks>
+ The functions returns a tabulated string representation of the expression.
+ </remarks>
+ 
+ <param name="expression">The expression to be converted.</param>
+ <param name="depth">The current depth (used for tabs).</param>
+ 
+ <returns>A string.</returns>
+ 
+ <example>
+   <code>
+     let expr = ... in
+     let str = expr_to_string expr 0 in 
+     printfn "Expression : %s" str
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Ast.Debug.generate_tabs(System.Int32)">
+ <summary>
+ Generate a <c>n</c> tabs string.
+ </summary>
+ 
+ <param name="n">The amount of tabs.</param>
+ 
+ <returns>A string.</returns>
+ 
+ <example>
+   <code>
+     let tabs = generate_tabs 4
+     // tabs = "        "
+   </code>
+ </example>
+</member>
+<member name="T:Lexer.Ast.Debug">
+ <summary>
+ This module contains element for debugging purposes.
+ </summary>
+</member>
+<member name="T:Lexer.Ast">
+ <summary>
+ This module contains all the code to process an expression to an abstract-syntax-tree (AST).
+ </summary>
+ 
+ <remarks>
+ All the logic is nested in a private sub-module.
+ </remarks>
+</member>
+<member name="T:Lexer.Parser.Tree">
+ <summary>
+ The evaluable expression type.
+ </summary>  
+</member>
+<member name="M:Lexer.Parser.eval_tree(Lexer.Parser.Tree,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,System.Double}})">
+ <summary>
+ Evaluates the given tree.
+ </summary>
+ 
+ <param name="tree">The tree.</param>
+ <param name="vals">The variables and their values.</param>
+ 
+ <returns>
+ If the evaluation founds a variable with no associated value, it returns an error else it returns the evaluated value.
+ </returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors    
+ 
+     let tree = ... in 
+     let vals = [ ... ] in
+     match eval_tree tree vals with
+     | Ok d -> printfn "The value of the tree is %d" d
+     | Error e -> printfn "Something went wrong %s" (error_to_string e)
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Parser.tree_to_string(Lexer.Parser.Tree)">
+ <summary>
+ Converts a tree to a string.
+ </summary>
+ 
+ <param name="tree">The tree</param>
+ 
+ <returns>
+ A string.
+ </returns>
+ 
+ <example>
+   <code>
+     let tree = ... in 
+     let str = tree_to_string tree in
+     printfn "Tree : %s" str
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Parser.parse_ast(Lexer.Ast.Expr)">
+ <summary>
+ Attemps to convert an AST to a Tree.
+ </summary>
+ 
+ <remarks>
+ This function ensures that the processed AST is valid.
+ </remarks>
+ 
+ <param name="ast">The AST.</param>
+ 
+ <returns>An error if the AST is invalid else a Tree.</returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+ 
+     let ast = ... in
+     match parse_ast ast with
+     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+     | Ok _ -> printfn "The AST is parsed to a tree."
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Parser.get_list_id(Lexer.Parser.Tree)">
+ <summary>
+ Returns all the identifiers in the given tree.
+ </summary>
+ 
+ <param name="tree">The tree.</param>
+ 
+ <returns>A list of string.</returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+     
+     let tree = ... in
+     match get_list_id tree with
+     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+     | Ok list -> printfn "There is %i identifiers in the tree" list.Length
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Parser.Logic.get_list_id(Lexer.Parser.Tree)">
+ <summary>
+ Returns all the identifiers in the given tree.
+ </summary>
+ 
+ <param name="tree">The tree.</param>
+ 
+ <returns>A list of string.</returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+     
+     let tree = ... in
+     match get_list_id tree with
+     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+     | Ok list -> printfn "There is %i identifiers in the tree" list.Length
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Parser.Logic.eval_tree(Lexer.Parser.Tree,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,System.Double}})">
+ <summary>
+ Evaluates the given tree.
+ </summary>
+ 
+ <param name="tree">The tree.</param>
+ <param name="vals">The variables and their values.</param>
+ 
+ <returns>
+ If the evaluation founds a variable with no associated value, it returns an error else it returns the evaluated value.
+ </returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+ 
+     let tree = ... in 
+     let vals = [ ... ] in
+     match eval_tree tree vals with
+     | Ok d -> printfn "The value of the tree is %d" d
+     | Error e -> printfn "Something went wrong %s" (error_to_string e)
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Parser.Logic.get_value(System.String,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,System.Double}})">
+ <summary>
+ Returns the value of a fixed variable.
+ </summary>
+ 
+ <param name="var">The queried variable</param>
+ <param name="var">The list of variables and their values.</param>
+ 
+ <returns>
+ If the queried variable is not found, the function returns None else it returns the variable's value.
+ </returns>
+ 
+ <example>
+   <code>
+     let var = "x"
+     let vals = [("y", 1.0); ("z", 2.0); ("x", 3.0); ("a", 4.0)]
+     match get_value var vals with  
+     | None -> printfn "Value not found."
+     | Some d -> printfn "The value of %s is %d" var d
+       // d = 3.0
+   </code>
+ </example>
+</member>
+<member name="M:Lexer.Parser.Logic.parse_ast(Lexer.Ast.Expr)">
+ <summary>
+ Attemps to convert an AST to a Tree.
+ </summary>
+ 
+ <remarks>
+ This function ensures that the processed AST is valid.
+ </remarks>
+ 
+ <param name="ast">The AST.</param>
+ 
+ <returns>An error if the AST is invalid else a Tree.</returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+ 
+     let ast = ... in
+     match parse_ast ast with
+     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+     | Ok _ -> printfn "The AST is parsed to a tree."
+   </code>
+ </example>
+</member>
+<member name="T:Lexer.Parser.Logic">
+ <summary>
+ This module contains all the logic.
+ </summary>  
+</member>
+<member name="M:Lexer.Parser.Debug.tree_to_string(Lexer.Parser.Tree)">
+ <summary>
+ Converts a tree to a string.
+ </summary>
+ 
+ <param name="tree">The tree.</param>
+ 
+ <results>A string.</results>
+ 
+ <example>
+   <code>
+     let tree = ... in
+     let str = tree_to_string tree in
+     printfn "Tree : %s" str
+   </code>
+ </example>
+</member>
+<member name="T:Lexer.Parser.Debug">
+ <summary>
+ This module contains element for debugging purposes.
+ </summary>
+</member>
+<member name="T:Lexer.Parser">
+ <summary>
+ This module contains all the code to process an AST to an evaluable expression (Tree).
+ </summary>
+ 
+ <remarks>
+ All the logic is nested in a private sub-module.
+ </remarks>
+</member>
+<member name="T:GUI.Plotting.PlottingData">
+ <summary>
+ This type represents all the data required to plot an expression. 
+ </summary>
+ 
+ <param name="tree">The expression to plot.</param>
+ <param name="target">The identifer to vary.</param>
+ <param name="target">The identifer to vary.</param>
+ <param name="vals">All the other identifiers with a fixed value.</param>
+ <param name="xmin">The variable's min value.</param>
+ <param name="xmax">The variable's max value.</param>
+ <param name="step">The variable's increment value.</param>
+ <param name="stallowNonContinueep">Indicates if the function is plotted if the function is non-continue.</param>
+ <param name="title">The chart's title.</param>
+</member>
+<member name="M:GUI.Plotting.plot_function(GUI.Plotting.PlottingData)">
+ <summary>
+ Attemps to plot the given expression and it's parameters.
+ </summary>
+ 
+ <param name="context">The plotting data.</param>
+ 
+ <returns>An error if the program encountered an error while processing the expression.</returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+     
+     let data = { ... } in
+     match plot_function data with
+     | Error _ -> printfn "Something went wrong : %s" (error_to_string e)
+     | Ok _ -> printfn "Expression plotted"
+   </code>
+ </example>
+</member>
+<member name="M:GUI.Plotting.plotting_data_to_string(GUI.Plotting.PlottingData)">
+ <summary>
+ Converts the given plotting data to a string.
+ </summary>
+ 
+ <param name="context">The plotting data.</param>
+ 
+ <return>A string.</returns>
+ 
+ <example>
+   <code>
+     let str = { ... } |> plotting_data_to_string in
+     printfn "Plotting data : %s" str
+   </code>
+ </example>
+</member>
+<member name="M:GUI.Plotting.Logic.plot_tree(GUI.Plotting.PlottingData)">
+ <summary>
+ Attemps to plot the given expression and it's parameters.
+ </summary>
+ 
+ <param name="context">The plotting data.</param>
+ 
+ <returns>An error if the program encountered an error while processing the expression.</returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+     
+     let data = { ... } in
+     match plot_tree data with
+     | Error _ -> printfn "Something went wrong : %s" (error_to_string e)
+     | Ok _ -> printfn "Expression plotted"
+   </code>
+ </example>
+</member>
+<member name="M:GUI.Plotting.Logic.convert_list_tuple_to_tuple_list(Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.Double,System.Double}})">
+ <summary>
+ Converts a list of tuples to a tuple of list.
+ </summary>
+ 
+ <param name="vals">A list of tuples (double, double)</param>
+ 
+ <return>Returns a tuple of double list.</return>
+ 
+ <example>
+   <code>
+     let vals = convert_list_tuple_to_tuple_list [(1.0, 2.0); (3.0, 4.0); (5.0, 6.0)]
+     // vals = ([1.0; 3.0; 5.0], [2.0; 4.0; 6.0]) 
+   </code>
+ </example>
+</member>
+<member name="M:GUI.Plotting.Logic.calcultate_points(GUI.Plotting.PlottingData)">
+ <summary>
+ Using the given context, this functions calculates all the points to plot the expression.
+ </summary>
+
+ <remarks>
+ If the funciton is non-continue and the context doesn't allow it, the function will return the Error variant.
+ </remarks>
+ 
+ <remarks>
+ If the funciton is non-continue and the context allow it, the function will return multiple list, each representing a continuous part.
+ </remarks>
+ 
+ <param name="context">The plotting data.</param>
+ 
+ <returns>A 2D list of values.</returns>
+ 
+ <example>
+   <code>
+     open Utilities.Errors
+ 
+     let ctx = {...} in
+     match calculate_points ctx with
+     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+     | Ok lines -> printfn "Calculated %i lines" lines.Length
+   </code>
+ </example>
+</member>
+<member name="T:GUI.Plotting.Logic">
+ <summary>
+ This module contains all the logic.
+ </summary>  
+</member>
+<member name="M:GUI.Plotting.Debug.plotting_data_to_string(GUI.Plotting.PlottingData)">
+ <summary>
+ Converts the plotting data to a string-like representation.
+ </summary>
+ 
+ <param name="data">The plotting data.</p>
+ 
+ <returns>A string</returns>
+ 
+ <example>
+   <code>
+     let data = {...} in
+     let str_data = plotting_data_to_string data in
+     printfn "%s" str_data
+   </code>
+ </example>
+</member>
+<member name="T:GUI.Plotting.Debug">
+ <summary>
+ This module contains element for debugging purposes.
+ </summary>
+</member>
+<member name="T:GUI.Plotting">
+ <summary>
+ This module contains all the code to plot the expression.
+ </summary>
+ 
+ <remarks>
+ All the logic is nested in a private sub-module.
+ </remarks>
+</member>
+<member name="M:Program.Program.main(System.String[])">
+ <summary>
+ The main function.
+ </summary>
+</member>
+<member name="M:Program.Program.loop(Microsoft.FSharp.Core.Unit)">
+ <summary>
+ The main loop of the application. The function : 
+ <ol>
+   <li>Asks the user for an expression.</li>
+   <li>Parses the expression.</li>
+   <li>Asks the user for the plotting data.</li>
+ </ol>
+ </summary>
+</member>
+<member name="M:Program.Program.ask_for_values(Microsoft.FSharp.Collections.FSharpList{System.String})">
+ <summary>
+ Asks the user for fixed values for all the identifiers.
+ </summary>
+ 
+ <remarks>
+ If any value given by the user is invalid, the function returns None.
+ </remarks>
+ 
+ <param name="variables">List of all identifiers.</param>
+ 
+ <returns>
+ A list of identifiers (string) with their values (double) or None if any value given by the user is invalid.
+ </returns>
+ 
+ <example>
+   <code>
+     let variables = [ ... ] in 
+     match ask_for_values variables with
+     | None -> printfn printfn "An invalid value has been selected by the user."
+     | Some _ -> printfn "All values for variables have been selected."
+   </code>
+ </example>
+</member>
+<member name="M:Program.Program.ask_for_target(Microsoft.FSharp.Collections.FSharpList{System.String})">
+ <summary>
+ The function asks the user for :
+ <list>
+   <item>The identifier to vary (i.e. the variable).</item>
+   <item>The variable's minimum value.</item>
+   <item>The variable's maximum value.</item>
+   <item>The variable's step.</item>
+ </list>
+ </summary>
+ 
+ <remarks>
+ If any of the values given by the user is invalid, the function will return None.
+ </remarks>
+ 
+ <param name="variables">The list of identifiers.</param>
+ 
+ <returns>
+ The name of the variable and its parameters (mininmum, maximum, step) or None if any of the values given by the user is invalid.
+ </returns>
+ 
+ <example>
+   <code>
+     let variables = [ ... ] in
+     match ask_for_target variables with
+     | None -> printfn "An invalid value has been selected by the user."
+     | Some (var, (min', max', step)) -> 
+         printfn "The variable '%s' will vary from %d to %d with a step of %d." var min' max' step
+   </code>
+ </example>
+</member>
+<member name="M:Program.Program.ask_for_boolean_value(System.String)">
+ <summary>
+ Ask the user for a boolean value in the console.
+ </summary>
+ 
+ <remarks>
+ If the user's value is invalid, the function returns None. 
+ </remarks>
+ 
+ <param name="name">The name of the asked value</param>
+ 
+ <returns>
+ A boolean or None if the user's value is invalid.
+ </returns> 
+ 
+ <example>
+   <code>
+     let name = "..." in
+     match ask_for_boolean_value name with
+     | None -> printfn "Invalid value selected by the user."
+     | Some b -> printfn "The value for '%s' is %O" name b
+   </code>
+ </example>
+</member>
+<member name="M:Program.Program.ask_for_double_value(System.String)">
+ <summary>
+ Ask the user for a double value in the console.
+ </summary>
+ 
+ <remarks>
+ If the user's value is not a double, the function returns None. 
+ </remarks>
+ 
+ <param name="name">The name of the asked value</param>
+ 
+ <returns>
+ A double or None if the user's value is can not be parsed as a double.
+ </returns> 
+ 
+ <example>
+   <code>
+     let name = "..." in
+     match ask_for_double_value name with
+     | None -> printfn "Invalid value selected by the user."
+     | Some d -> printfn "The value for '%s' is %d" name d 
+   </code>
+ </example>
+</member>
+<member name="M:Program.Program.convert_to_tree(Lexer.Ast.Expr)">
+ <summary>
+ Converts an AST to Tree.
+ </summary>
+ 
+ <remarks>
+ Returns None if the AST is invalid.
+ </remarks>
+ 
+ <param name="ast">The AST.</param>
+ 
+ <returns>
+ Returns a Tree or None if the list AST is invalid.
+ </returns>
+ 
+ <example>
+   <code>
+     let ast = ... in 
+     match convert_to_tree ast with
+     | None -> printfn "The AST can not be parsed to a Tree."
+     | Some _ -> printfn "The AST is parsed !"
+   </code>
+ </example>
+</member>
+<member name="M:Program.Program.convert_to_ast(Microsoft.FSharp.Collections.FSharpList{Lexer.Tokens.Token})">
+ <summary>
+ Converts a list of tokens to an Abstract Syntax Tree.
+ </summary>
+ 
+ <remarks>
+ Returns None if the list of tokens is invalid.
+ </remarks>
+ 
+ <param name="tokens">The list of tokens.</param>
+ 
+ <returns>
+ Returns an AST or None if the list of tokens is invalid.
+ </returns>
+ 
+ <example>
+   <code>
+     let tokens = [ ... ] in 
+     match convert_to_ast tokens with
+     | None -> printfn "The tokens can not be parsed to an AST."
+     | Some _ -> printfn "The tokens are parsed !"
+   </code>
+ </example>
+</member>
+<member name="M:Program.Program.convert_to_expr(System.String)">
+ <summary>
+ Converts a string to a list of token.
+ </summary>
+ 
+ <remarks>
+ Returns None if the string is invalid.
+ </remarks>
+ 
+ <param name="str">The string.</param>
+ 
+ <returns>
+ A list of token or None if the string is invalid.
+ </returns>
+ 
+ <example>
+   <code>
+     let str = "..." in
+     match convert_to_expr str with
+     | None -> printfn "The string can not be converted to tokens."
+     | Some list -> printfn "The string is converted to %i tokens." list.Length
+   </code>
+ </example>
+</member>
+<member name="T:Program.Program">
+ <summary>
+ This is the main module.
+ </summary>
+</member>
+</members>
+</doc>
