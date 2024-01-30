@@ -1,12 +1,19 @@
 namespace Lexer
 
+
+/// <summary>
+/// This module contains all the code to process an AST to an evaluable expression (Tree).
+/// </summary>
+/// 
+/// <remarks>
+/// All the logic is nested in a private sub-module.
+/// </remarks>
 module Parser = 
   
-  let continued_tab_base = " ├─"
-  let tab_base = " └─"
-  let empty_tab = "   "
-  let full_tab = " ──"
 
+  /// <summary>
+  /// The evaluable expression type.
+  /// </summary>  
   type Tree = 
   | Add of Tree * Tree
   | Sub of Tree * Tree
@@ -18,8 +25,27 @@ module Parser =
   | Id of string
 
 
+  /// <summary>
+  /// This module contains element for debugging purposes.
+  /// </summary>
   module private Debug = 
 
+
+    /// <summary>
+    /// Converts a tree to a string.
+    /// </summary>
+    /// 
+    /// <param name="tree">The tree.</param>
+    /// 
+    /// <results>A string.</results>
+    /// 
+    /// <example>
+    ///   <code>
+    ///     let tree = ... in
+    ///     let str = tree_to_string tree in
+    ///     printfn "Tree : %s" str
+    ///   </code>
+    /// </example>
     let rec tree_to_string (tree: Tree) : string = 
       match tree with
       | Add (left, right) ->  
@@ -46,10 +72,36 @@ module Parser =
       | Id i -> i
 
 
+  /// <summary>
+  /// This module contains all the logic.
+  /// </summary>  
   module private Logic = 
 
     open Utils.Errors
 
+
+    /// <summary>
+    /// Attemps to convert an AST to a Tree.
+    /// </summary>
+    /// 
+    /// <remarks>
+    /// This function ensures that the processed AST is valid.
+    /// </remarks>
+    /// 
+    /// <param name="ast">The AST.</param>
+    /// 
+    /// <returns>An error if the AST is invalid else a Tree.</returns>
+    /// 
+    /// <example>
+    ///   <code>
+    ///     open Utilities.Errors
+    /// 
+    ///     let ast = ... in
+    ///     match parse_ast ast with
+    ///     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+    ///     | Ok _ -> printfn "The AST is parsed to a tree."
+    ///   </code>
+    /// </example>
     let rec parse_ast (ast: Ast.Expr) : Result<Tree, Error> = 
       match ast with
       | Ast.Expr.Token token -> 
@@ -87,6 +139,28 @@ module Parser =
             | _ -> ParsingError "Invalid operator found" |> Error
         | _ -> ParsingError "Too many operand found" |> Error
 
+
+    /// <summary>
+    /// Returns the value of a fixed variable.
+    /// </summary>
+    /// 
+    /// <param name="var">The queried variable</param>
+    /// <param name="var">The list of variables and their values.</param>
+    /// 
+    /// <returns>
+    /// If the queried variable is not found, the function returns None else it returns the variable's value.
+    /// </returns>
+    /// 
+    /// <example>
+    ///   <code>
+    ///     let var = "x"
+    ///     let vals = [("y", 1.0); ("z", 2.0); ("x", 3.0); ("a", 4.0)]
+    ///     match get_value var vals with  
+    ///     | None -> printfn "Value not found."
+    ///     | Some d -> printfn "The value of %s is %d" var d
+    ///       // d = 3.0
+    ///   </code>
+    /// </example>
     let rec get_value (var: string) (vals: list<string * double>) : Option<double> = 
       match vals with
       | [] -> None
@@ -94,6 +168,29 @@ module Parser =
         if n = var then Some v 
         else get_value var t 
 
+
+    /// <summary>
+    /// Evaluates the given tree.
+    /// </summary>
+    /// 
+    /// <param name="tree">The tree.</param>
+    /// <param name="vals">The variables and their values.</param>
+    /// 
+    /// <returns>
+    /// If the evaluation founds a variable with no associated value, it returns an error else it returns the evaluated value.
+    /// </returns>
+    /// 
+    /// <example>
+    ///   <code>
+    ///     open Utilities.Errors
+    /// 
+    ///     let tree = ... in 
+    ///     let vals = [ ... ] in
+    ///     match eval_tree tree vals with
+    ///     | Ok d -> printfn "The value of the tree is %d" d
+    ///     | Error e -> printfn "Something went wrong %s" (error_to_string e)
+    ///   </code>
+    /// </example>
     let rec eval_tree (tree: Tree) (vals: list<string * double>) : Result<double, Error> = 
       match tree with
       | Add (left, right) -> 
@@ -134,6 +231,25 @@ module Parser =
         | Some v -> Ok v
         | None -> EvalError (sprintf "No value for var <%s> was given" i) |> Error
 
+
+    /// <summary>
+    /// Returns all the identifiers in the given tree.
+    /// </summary>
+    /// 
+    /// <param name="tree">The tree.</param>
+    /// 
+    /// <returns>A list of string.</returns>
+    /// 
+    /// <example>
+    ///   <code>
+    ///     open Utilities.Errors
+    ///     
+    ///     let tree = ... in
+    ///     match get_list_id tree with
+    ///     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+    ///     | Ok list -> printfn "There is %i identifiers in the tree" list.Length
+    ///   </code>
+    /// </example>
     let rec get_list_id (tree: Tree) : Result<list<string>, Error> = 
       match tree with
       | Add (left, right) | Mul (left, right) | Sub (left, right) | Div (left, right) ->
@@ -144,17 +260,99 @@ module Parser =
         | Ok left'', Ok right'' -> Utils.Utilities.intersect_list left'' right'' |> Ok
       | Neg op -> get_list_id op 
       | Id i -> Ok [i]
-      |_ -> Ok []
+      | _ -> Ok []
 
 
+  /// <summary>
+  /// Returns all the identifiers in the given tree.
+  /// </summary>
+  /// 
+  /// <param name="tree">The tree.</param>
+  /// 
+  /// <returns>A list of string.</returns>
+  /// 
+  /// <example>
+  ///   <code>
+  ///     open Utilities.Errors
+  ///     
+  ///     let tree = ... in
+  ///     match get_list_id tree with
+  ///     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+  ///     | Ok list -> printfn "There is %i identifiers in the tree" list.Length
+  ///   </code>
+  /// </example>
   let get_list_id (tree: Tree) : Result<list<string>, Utils.Errors.Error> = 
     Logic.get_list_id tree
 
+
+  /// <summary>
+  /// Attemps to convert an AST to a Tree.
+  /// </summary>
+  /// 
+  /// <remarks>
+  /// This function ensures that the processed AST is valid.
+  /// </remarks>
+  /// 
+  /// <param name="ast">The AST.</param>
+  /// 
+  /// <returns>An error if the AST is invalid else a Tree.</returns>
+  /// 
+  /// <example>
+  ///   <code>
+  ///     open Utilities.Errors
+  /// 
+  ///     let ast = ... in
+  ///     match parse_ast ast with
+  ///     | Error e -> printfn "Something went wrong : %s" (error_to_string e)
+  ///     | Ok _ -> printfn "The AST is parsed to a tree."
+  ///   </code>
+  /// </example>
   let parse_ast (ast: Ast.Expr) : Result<Tree, Utils.Errors.Error> = 
     Logic.parse_ast ast
 
+
+  /// <summary>
+  /// Converts a tree to a string.
+  /// </summary>
+  /// 
+  /// <param name="tree">The tree</param>
+  /// 
+  /// <returns>
+  /// A string.
+  /// </returns>
+  /// 
+  /// <example>
+  ///   <code>
+  ///     let tree = ... in 
+  ///     let str = tree_to_string tree in
+  ///     printfn "Tree : %s" str
+  ///   </code>
+  /// </example>
   let tree_to_string (tree: Tree) : string = 
     Debug.tree_to_string tree
   
+
+  /// <summary>
+  /// Evaluates the given tree.
+  /// </summary>
+  /// 
+  /// <param name="tree">The tree.</param>
+  /// <param name="vals">The variables and their values.</param>
+  /// 
+  /// <returns>
+  /// If the evaluation founds a variable with no associated value, it returns an error else it returns the evaluated value.
+  /// </returns>
+  /// 
+  /// <example>
+  ///   <code>
+  ///     open Utilities.Errors    
+  /// 
+  ///     let tree = ... in 
+  ///     let vals = [ ... ] in
+  ///     match eval_tree tree vals with
+  ///     | Ok d -> printfn "The value of the tree is %d" d
+  ///     | Error e -> printfn "Something went wrong %s" (error_to_string e)
+  ///   </code>
+  /// </example>
   let eval_tree (tree: Tree) (vals: list<string * double>) : Result<double, Utils.Errors.Error> = 
     Logic.eval_tree tree vals
